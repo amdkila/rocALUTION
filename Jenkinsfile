@@ -234,22 +234,8 @@ rocALUTIONCI:
         junit "${project.paths.project_build_prefix}/build/release/clients/staging/*.xml"
     }
 
-    def packageCommand =
-    {
-        platform, project->
-
-        def command = """
-                    set -x
-                    cd ${project.paths.project_build_prefix}/build/release
-                    make package
-                    rm -rf package && mkdir -p package
-                    mv *.deb package/
-                    dpkg -c package/*.deb
-                """
-
-        platform.runCommand(this, command)
-        platform.archiveArtifacts(this, """${project.paths.project_build_prefix}/build/release/package/*.deb""")
-    }
+    // No need to test packaging for hip-clang right now
+    def packageCommand = null
 
     buildProject(rocalution, formatCheck, nodes.dockerArray, compileCommand, testCommand, packageCommand)
 
